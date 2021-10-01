@@ -1,23 +1,19 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-
-function App() {
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SearchRecipe from './components/SearchRecipe';
+require('dotenv').config()
+const App=()=>{
+  console.log(process.env.APPLICATION_ID)
+  console.log(process.env.APPLICATION_KEY)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-fluid bg-success" style={{width:"100vw",height:"100vh"}}>
+      <h1 className="text-center text-white text-uppercase p-3">Recipe Search Application</h1>
+      <Router>
+        <Switch>
+          <Route path="/" exact component={SearchRecipe}/>
+        </Switch>
+      </Router>
     </div>
   );
 }
