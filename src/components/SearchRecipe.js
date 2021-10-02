@@ -1,15 +1,33 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-const SearchRecipe=()=>{
+import RecipeCard from './RecipeCard';
+function SearchRecipe()
+{
+    const APPLICATION_ID="34b0f5a1";
+    const APPLICATION_KEY="ade5786bf4db5e3a351c184dab933c2b";	
 
     const [searchValue,setSearchValue]=useState("Banana")
     const [recipeList,setRecipeList]=useState([])
-    console.log(process.env.APPLICATION_ID,process.env.APPLICATION_KEY)
 
     useEffect(()=>{
-        const response=axios.get(`https://api.edamam.com/search?q=${searchValue}&app_id=${process.env.APPLICATION_ID}&app_key=${process.env.APPLICATION_KEY}`)
-        console.log(response.json)
-    })
+        getRecipe();
+    },[searchValue])
+
+    const requestReq=`https://api.edamam.com/search?q=${searchValue}&app_id=${APPLICATION_ID}&app_key=${APPLICATION_KEY}`
+    
+    const getRecipe=async()=>{
+        try{
+            const response = await fetch(requestReq)
+            const data=await response.json()
+            setRecipeList(data.hits)
+            console.log(data.hits)
+        }
+        catch(err)
+        {
+            console.log("No Record Found!!!")
+        }
+       
+    }
     return (
         <>
           <div className="row">
@@ -25,6 +43,12 @@ const SearchRecipe=()=>{
                 </form>
             </div>
           </div> 
+          <div className="row">
+              { recipeList ?
+                recipeList.map((recipe)=><RecipeCard recipe={recipe}/>)
+               : <h1 className="bg-danger">No Record Found!!</h1>
+            } 
+          </div>
         </>
     )
 }
